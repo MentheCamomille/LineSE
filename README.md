@@ -1,2 +1,5 @@
 # LineSE
-LineSE, un OS hybride un Linux avec des fonctionnalités de WIndows
+LineSE, un OS hybride un Linux avec des fonctionnalités de Windows
+
+## Run
+éxécuter commands.sh ( pour le moment)
