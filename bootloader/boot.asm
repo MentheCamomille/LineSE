@@ -1,15 +1,19 @@
+[org 0x7c00]
 mov ah, 0x0e
-mov al, 65
-int 0x10
+mov bx, variableName
 
-loop:
-    inc al
-    cmp al, 'Z' + 1
-    je exit
+printString:
+    mov al, [bx]
+    cmp al, 0
+    je end
     int 0x10
-    jmp loop
-exit:
+    inc bx
+    jmp printString
+end:
     jmp $
 
+variableName:
+    db "Welcome into LineSE", 0
+
 times 510-($-$$) db 0
-db 0x055, 0x0aa
+dw 0xaa55
