@@ -1,0 +1,10 @@
+[org 0x7e00]
+mov ah, 2
+mov al, 1
+mov ch, 0
+mov cl, 2
+mov dh, 0
+mov dl, [diskNum]
+;es.bx = 0x7e00
+
+int 0x13
