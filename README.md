@@ -1,5 +1,5 @@
 # LineSE
-LineSE, un projet d'OS hybride, à mis chemin entre Linux et Windows.
+LineSE, un projet d'OS performant et élégant alliant élégance, souplesse, rapidité et légèreté.
 
 ## Run
 Exécuter ```commands.sh```
