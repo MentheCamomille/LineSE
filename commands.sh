@@ -12,3 +12,4 @@ cat "bins/boot.bin" "bins/full_kernel.bin" "bins/zeroes.bin" > "bins/OS.bin"
 
 qemu-system-x86_64 -drive format=raw,file="bins/OS.bin",index=0,if=floppy, -m 128M
 
+      

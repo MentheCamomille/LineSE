@@ -63,6 +63,50 @@ static void exec_cmd(char **cmd)
     }
 }
 
+static void get_absolute_path(char **cmd)
+{
+    char *path = strdup(getenv("PATH"));
+    char *bin = NULL;
+    char **path_split = NULL;
+
+    if (path == NULL) //si le path est null, on crée un path
+            path = strdup("/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin");
+
+    // si cmd n'est pas le chemin absolue, on cherche le chemin absolue du binaire
+    //grace à la variable d'environnement PATH
+    if (cmd[0][0] != '/' && strncmp(cmd[0], "./", 2) != 0) {
+
+        //on boucle sur chaque folder du path pour trouver l'emplacement du binaire
+        for (int i = 0; path_split[i]; i++) {
+            //alloc len du path + '/' + len du binaire + 1 pour le '\0'
+            bin = (char*)calloc(sizeof(char), (strlen(path_split[i]) + 1 + strlen(cmd[0]) + 1 ));
+            if (bin == NULL)
+                    break;
+
+            //on concat le path, le '/' et le nom du binaire 
+            strcat(bin, path_split[i]);
+            strcat(bin, "/");
+            strcat(bin, cmd[0]);
+
+            //on verifie l'existence du fichier et on quitte la boucle si access renvoi 0
+            if (access(bin,F_OK) == 0)
+                    break;
+
+            //lol faut bien que ce soit propre 
+            free(bin);
+            bin = NULL;
+        }
+        free_array(path_split);
+
+        //on remplace le bin par le path absolue ou Null si le bin n'existe pas
+        free(cmd[0]);
+        cmd[0] = bin;
+    } else {
+        free(path);
+        path = NULL;
+    } 
+}
+
 int main()
 {
     char *buffer = NULL;
@@ -81,15 +125,19 @@ int main()
 
     // lecture de STDIN en boucle
     while (getline(&buffer, &buf_size, stdin) > 0) {
-        char **cmd = split(buffer, " \n"); // découpe la commande en tokens
+            cmd = split(buffer, "\n\t");
+            get_absolute_path(cmd);
 
-        exec_cmd(cmd);
-
-        free_array(cmd); // libère la mémoire allouée pour cmd
-        write(1, "$> ", 3); // affiche le prompt
+            if (cmd[0] == NULL)
+                printf("command not found\n");
+            else
+                exec_cmd(cmd);
+            
+            write(1, "$> ", 3);
+            free_array(cmd);
     }
 
     printf("Bye \n");
     free(buffer);
-    return EXIT_SUCCESS;
 }
+~
