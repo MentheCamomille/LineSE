@@ -1,5 +1,9 @@
 .vscode/
 
+# folder in texteditor
+/target
+target/
+
 # binaries
 bins/
 os_image.bin

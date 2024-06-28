@@ -1,4 +1,4 @@
-# nasm and qemu
+# install nasm and qemu if you doesn't have them
 # sudo apt-get install nasm
 # sudo apt-get install qemu
 # sudo apt-get install qemu-kvm
